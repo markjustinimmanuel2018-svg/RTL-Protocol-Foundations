@@ -31,9 +31,13 @@ The goal of this repository is to:
 RTL-Protocol-Foundations/
 
 ├── Week-1/ # UART Transmitter
+
 ├── Week-2/ # UART Receiver \& Loopback Verification
+
 ├── Week-3/ # SPI Master
+
 ├── Week-4/ # SPI Slave \& Full-Duplex Communication
+
 └── README.md
 
 
