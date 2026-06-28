@@ -1,0 +1,55 @@
+module uart_tx (input clk, rst, baud_tick, tx_start,
+                input [7:0] tx_data,
+                output reg tx, tx_busy);
+  
+  localparam IDLE = 2'b00, START = 2'b01, DATA = 2'b10, STOP = 2'b11;
+  reg [1:0] state;
+  reg [7:0] shift_reg;
+  reg [2:0] bit_count;
+  
+  always @(posedge clk or posedge rst) begin
+    if(rst) begin
+      state <= IDLE;
+      tx <= 1'b1;
+      tx_busy <= 1'b0;
+      shift_reg <= 8'b0;
+      bit_count <= 3'b0;
+    end
+    else begin
+      case(state)
+        IDLE: begin
+          tx <= 1'b1;
+          tx_busy <= 1'b0;
+          if(tx_start) begin
+            shift_reg <= tx_data;
+            bit_count <= 0;
+            tx_busy <= 1'b1;
+            tx <= 1'b0;
+            state <= START;
+          end
+        end
+        START: begin
+          if(baud_tick)
+            state <= DATA;
+        end
+        DATA: begin
+          if(baud_tick) begin
+            tx <= shift_reg[0];
+            shift_reg <= shift_reg >> 1;
+            if(bit_count == 3'b111)
+              state <= STOP;
+            else
+              bit_count <= bit_count + 1;
+          end
+        end
+        STOP: begin
+          if(baud_tick) begin
+            tx <= 1'b1;
+            tx_busy <= 1'b0;
+            state <= IDLE;
+          end
+        end
+      endcase
+    end
+  end
+endmodule

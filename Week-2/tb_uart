@@ -1,0 +1,35 @@
+module tb_uart;
+  reg clk, rst, tx_start;
+  reg [7:0] tx_data;
+  wire [7:0] rx_data;
+  wire rx_done;
+  
+  uart #(.clk_freq(100), .baud_rate(10)) dut(.clk(clk), .rst(rst), .tx_start(tx_start), .tx_data(tx_data), .rx_data(rx_data), .rx_done(rx_done));
+  
+  always #10 clk = ~clk;
+  
+  initial begin
+    clk = 0;
+    rst = 1;
+    tx_start = 0;
+    tx_data = 8'b10011011;
+    #50;
+    rst = 0;
+    #50;
+    tx_start = 1;
+    #50;
+    tx_start = 0;
+    #2500;
+    $finish;
+  end
+  
+  always @(posedge clk) begin
+    if(rx_done) begin
+      if(rx_data == tx_data)
+        $display("PASS: TX=%b RX=%b", tx_data, rx_data);
+      else
+        $display("FAIL: TX=%b RX=%b", tx_data, rx_data);
+    end
+  end
+  
+endmodule

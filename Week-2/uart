@@ -1,0 +1,19 @@
+module uart #(
+  parameter clk_freq = 50000000,
+  parameter baud_rate = 9600)
+  (input clk, rst, tx_start, 
+   input [7:0] tx_data,
+   output [7:0] rx_data,
+   output rx_done);
+  
+  wire baud_tick, tx_line, tx_busy;
+  
+  baud_gen #(.clk_freq(clk_freq), .baud_rate(baud_rate)) baud(.clk(clk), .rst(rst), .baud_tick(baud_tick));
+  
+  uart_tx tx_inst(.clk(clk), .rst(rst), .baud_tick(baud_tick), .tx_start(tx_start), .tx_data(tx_data), .tx(tx_line), .tx_busy(tx_busy));
+  
+  uart_rx #(.clk_freq(clk_freq), .baud_rate(baud_rate)) rx_inst(.clk(clk), .rst(rst), .rx(tx_line), .rx_data(rx_data), .rx_done(rx_done));
+  
+endmodule
+
+
