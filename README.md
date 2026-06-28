@@ -31,13 +31,9 @@ The goal of this repository is to:
 RTL-Protocol-Foundations/
 
 ├── Week-1/ # UART Transmitter
-
 ├── Week-2/ # UART Receiver \& Loopback Verification
-
 ├── Week-3/ # SPI Master
-
 ├── Week-4/ # SPI Slave \& Full-Duplex Communication
-
 └── README.md
 
 
@@ -58,15 +54,10 @@ Each folder contains:
 
 
 | Week |                Project                |                     Key Concepts                    |
-
 |------|---------------------------------------|-----------------------------------------------------|
-
 |   1  |           UART Transmitter            | UART Protocol, baud generation, serial transmission |
-
 |   2  | UART Receiver \& Loopback Verification | Start-bit detection, data conversion, UART loopback |
-
 |   3  |              SPI Master               |  SPI Mode-0, clock division, full-duplex transfer   |
-
 |   4  | SPI Slave \& Full-Duplex Communication |         MOSI, MISO, master-slave integration        |
 
 
