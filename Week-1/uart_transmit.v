@@ -5,8 +5,10 @@ module uart_transmit #(parameter clk_freq = 50000000,
   output tx, tx_busy);
   
   wire baud_tick;
+
+  wire sync = tx_start && !tx_busy;
   
-  baud_gen #(.clk_freq(clk_freq), .baud_rate(baud_rate)) baud(.clk(clk), .rst(rst), .baud_tick(baud_tick));
+  baud_gen #(.clk_freq(clk_freq), .baud_rate(baud_rate)) baud(.clk(clk), .rst(rst), .sync(sync), .baud_tick(baud_tick));
   
   uart_tx transmit(.clk(clk), .rst(rst), .baud_tick(baud_tick), .tx_start(tx_start), .tx_data(tx_data), .tx(tx), .tx_busy(tx_busy));
   

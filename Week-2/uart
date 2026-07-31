@@ -7,8 +7,10 @@ module uart #(
    output rx_done);
   
   wire baud_tick, tx_line, tx_busy;
+ 
+  wire sync = tx_start && !tx_busy; 
   
-  baud_gen #(.clk_freq(clk_freq), .baud_rate(baud_rate)) baud(.clk(clk), .rst(rst), .baud_tick(baud_tick));
+  baud_gen #(.clk_freq(clk_freq), .baud_rate(baud_rate)) baud(.clk(clk), .rst(rst), .sync(sync), .baud_tick(baud_tick));
   
   uart_tx tx_inst(.clk(clk), .rst(rst), .baud_tick(baud_tick), .tx_start(tx_start), .tx_data(tx_data), .tx(tx_line), .tx_busy(tx_busy));
   
